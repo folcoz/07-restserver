@@ -2,6 +2,7 @@ const config = require('./config/config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -11,39 +12,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    res.json('Hello World');
-});
+require('./routes/usuario').routes(app);
 
-app.get('/usuarios', (req, res) => {
-    res.json('get Usuario');
-});
+const listen = (mngoose) => {
+    console.log('Mongoose is ready');
 
-app.post('/usuarios', (req, res) => {
-    let body = req.body; // already parsed by body-parser
-    if (!body.nombre) {
-        res.status(400).json({
-            status:400,
-            error: 'cepsa.api.error.Required',
-            message:'El nombre es necesario',
-            info: ['nombre']
-        })
-    } else {
-        res.json(body);
-    }
-});
-
-app.put('/usuarios/:id', (req, res) => {
-    let id = req.params.id;
-    res.json({
-        id
-    });
-});
-
-app.delete('/usuarios/:id', (req, res) => {
-    res.json('delete Usuario');
-});
-
-app.listen(config.port, () => {
-    console.log(`Listening on port ${config.port}`);
-});
+    app.listen(config.port, () => {
+        console.log(`Listening on port ${config.port}`);
+    });    
+};
+mongoose.connect(config.dbURL, {useNewUrlParser: true, useCreateIndex: true})
+    .then(listen)
+    .catch(console.error);
