@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // parse application/json
 app.use(bodyParser.json());
 
-require('./routes/usuario').routes(app);
+app.use(require('./routes/index'));
 
 const listen = (mngoose) => {
     console.log('Mongoose is ready');

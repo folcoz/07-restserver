@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+const common = require('./common');
+
 let Schema = mongoose.Schema;
 
 let usuarioSchema = new Schema({
@@ -49,4 +51,10 @@ usuarioSchema.methods.toJSON = function () {
 
 usuarioSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser único'});
 
-module.exports = mongoose.model('Usuario', usuarioSchema);
+const Usuario = mongoose.model('Usuario', usuarioSchema);
+
+module.exports = {
+    Usuario,
+    fetchUsuarios: common.fetchDocumentsByCondition(Usuario),
+    totalUsuarios: common.countDocumentsByCondition(Usuario)
+};
