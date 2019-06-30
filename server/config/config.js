@@ -31,11 +31,22 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 // =============================
+// Google Client ID
+// =============================
+let googleClientId;
+if (process.env.NODE_ENV === 'dev') {
+    googleClientId = process.env.GOOGLE_CLIENT_ID || '254295337848-0628h4b5mv95hfla7gg1c74q9p0oema4.apps.googleusercontent.com';
+} else {
+    googleClientId = process.env.GOOGLE_CLIENT_ID;
+}
+
+// =============================
 // Module Exports
 // =============================
 module.exports = {
     port: process.env.PORT || 3000,
     dbURL,
     tokenExpiresIn,
-    tokenSecret
+    tokenSecret,
+    googleClientId
 };
