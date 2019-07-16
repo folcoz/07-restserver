@@ -38,6 +38,25 @@ app.get('/usuarios', verificarToken, (req, res) => {
 
 });
 
+app.get('/usuarios/:id', verificarToken, (req, res) => {
+    
+    let id = req.params.id;
+
+    Usuario.findById(id, (err, usuarioDB) => {
+        if (err) {
+            res.status(400).json({
+                status: 400,
+                error: 'cepsa.api.error.BadRequest',
+                message: err.toString(),
+                err
+            });
+        } else {
+            res.json(usuarioDB);
+        }
+    });
+
+});
+
 app.post('/usuarios', [verificarToken, verificarAdminRole], (req, res) => {
     let body = req.body; // already parsed by body-parser
 
